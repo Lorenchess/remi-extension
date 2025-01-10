@@ -1,0 +1,17 @@
+{
+  "name": "remi-extension",
+  "version": "1.0.0",
+  "description": "Chrome extension for website reminders",
+  "author": "Ramon Lorente",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build"
+  },
+  "private": true,
+  "devDependencies": {
+    "vite": "^6.0.7"
+  },
+  "dependencies": {
+    "@tensorflow/tfjs": "^4.22.0"
+  }
+}
