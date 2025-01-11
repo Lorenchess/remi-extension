@@ -5,6 +5,8 @@
   "author": "Ramon Lorente",
   "scripts": {
     "dev": "vite",
+    "dev:popup": "vite --open /popup/popup.html",
+    "dev:train": "vite --open /dev/dev.html",
     "build": "vite build"
   },
   "private": true,

@@ -12,7 +12,7 @@ export default defineConfig({
         }
     },
     server: {
-        open: "/popup/popup.html",
+        open: "/dev/dev.html",
         port: 3000
     }
 });
