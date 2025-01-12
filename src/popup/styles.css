@@ -1,22 +1,39 @@
+/* Set a wider container for the popup */
 body {
+    width: 400px; /* Adjust the width as needed */
+    margin: 0;
+    padding: 10px;
     font-family: Arial, sans-serif;
-    margin: 10px;
+}
+
+/* Ensure the input field and button are styled properly */
+input#input-text {
+    width: 100%; /* Make the input field fill the available space */
     padding: 10px;
+    margin-bottom: 10px;
+    font-size: 16px;
+    box-sizing: border-box; /* Ensure padding doesn't affect the width */
 }
 
-button {
-    display: block;
-    margin: 10px 0;
+button#predict-btn {
+    width: 100%; /* Make the button full-width */
     padding: 10px;
+    font-size: 16px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
 }
 
-input {
-    width: 100%;
-    padding: 8px;
-    margin: 10px 0;
+button#predict-btn:hover {
+    background-color: #0056b3; /* Darker blue on hover */
 }
 
-#output {
-    font-weight: bold;
+/* Style for the output text */
+p#output {
+    font-size: 14px;
     margin-top: 10px;
+    color: #333;
 }
+

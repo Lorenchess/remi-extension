@@ -1,24 +1,17 @@
 {
   "manifest_version": 3,
-  "name": "Remi - AI chatbot assistant",
+  "name": "Remi - AI Chatbot Assistant",
   "version": "1.0",
   "description": "A Chrome extension that uses TensorFlow.js to map keywords to URLs",
   "permissions": ["storage", "tabs"],
-  "hot_permissions": ["https://*/*"],
-  "background": {
-    "service_worker": "src/popup/background.js"
-  },
+  "host_permissions": ["https://*/*"],
   "action": {
-    "default_popup": "/src/popup/popup.html",
+    "default_popup": "popup/popup.html",
     "default_icon": {
-      "16": "icons/remi16.png",
-      "48": "icons/remi48.png",
       "128": "icons/remi128.png"
     }
   },
   "icons": {
-    "16": "icons/remi16.png",
-    "48": "icons/remi48.png",
     "128": "icons/remi128.png"
   }
 }

@@ -22,13 +22,18 @@ const urlMap = {
     confluence: "https://www.atlassian.com/software/confluence"
 };
 
+const modelPath = "../model/model.json";
+
 document.addEventListener("DOMContentLoaded", async () => {
+    const output = document.getElementById("output");
+    output.innerText = "Loading model..."
     try {
-        model = await tf.loadLayersModel("scr/model/model.json");
+        model = await tf.loadLayersModel(modelPath);
         console.log("Model loaded successfully", model)
+        output.innerText = "Model loaded! Type a query to begin."
     } catch (error) {
         console.error("Error loading the model", error);
-        alert("Failed to load model!");
+        output.innerText = "Failed to load model!";
     }
 })
 
