@@ -3,6 +3,7 @@ import {verifyVocabulary, vocabulary} from "../data/vocabulary.js";
 import { createBowVector } from "../utils/vectorize.js";
 import * as tf from '@tensorflow/tfjs'
 import {labelToIndex} from "../data/labels";
+import {showToast} from "../utils/utils";
 let model;
 
 //Logs to the console the vocabulary verification...
@@ -42,6 +43,7 @@ function disposeTensors() {
     if (xsValidation) xsValidation.dispose();
     if (ysValidation) ysValidation.dispose();
     console.log("Tensors disposed.");
+    console.log("Number of active tensors:", tf.memory().numTensors)
 }
 
 //Build model
@@ -107,6 +109,10 @@ document.getElementById("train-btn").addEventListener("click", async () => {
 
      console.log("Memory before training:", tf.memory());
 
+     let bestValAccuracy = 0;
+     let patience = 5;
+     let noImprovementCount = 0;
+
      await model.fit(xsInputs, ysOutputs, {
          epochs: 50,
          batchSize: Math.min(4, trainingData.length),
@@ -116,13 +122,27 @@ document.getElementById("train-btn").addEventListener("click", async () => {
                  const progressText = `Epoch ${epoch + 1}: Loss = ${logs.loss}, Accuracy = ${logs.acc}, ` +
                      `Validation Loss = ${logs.val_loss}, Validation Accuracy = ${logs.val_acc}`;
                  console.log(progressText);
+
+                 if (logs.val_acc > bestValAccuracy) {
+                     bestValAccuracy = logs.val_acc;
+                     noImprovementCount = 0;
+                 } else {
+                     noImprovementCount++;
+                     if (noImprovementCount >= patience) {
+                         console.log(`Early stopping triggered at epoch ${epoch + 1}`);
+                         model.stopTraining = true;
+                     }
+                 }
+
                  progress.innerText = progressText;
              }
          }
      });
-     alert("Model trained successfully!");
+     showToast("Model trained successfully!");
+
      document.getElementById("save-btn").disabled = false;
  } catch (error) {
+     showToast("Error during model training...check console logs")
      console.error("Error during model training:", error);
  } finally {
      disposeTensors();
@@ -132,7 +152,7 @@ document.getElementById("train-btn").addEventListener("click", async () => {
 //Save Model
 document.getElementById("save-btn").addEventListener("click", async ()=> {
     await model.save("downloads://model");
-    alert("Model saved successfully!")
+    showToast("Model saved successfully!")
 })
 
 

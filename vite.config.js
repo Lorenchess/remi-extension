@@ -7,8 +7,8 @@ export default defineConfig({
         outDir: "../dist",  // Output folder
         rollupOptions: {
             input: {
-                popup: __dirname + "/src/popup/popup.html",
-                // dev: "./dev/dev.html"
+                // popup: __dirname + "/src/popup/popup.html",
+                dev: __dirname + "./dev/dev.html"
             }
         }
     },
@@ -31,7 +31,8 @@ export default defineConfig({
         })
     ],
     server: {
-        open: "/popup/popup.html", // Default entry for dev server
+        open: "/dev/dev.html", // Default entry for dev server
+        // open: "/popup/popup.html", // Default entry for dev server
         port: 3000
     }
 });
