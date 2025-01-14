@@ -7,11 +7,24 @@ export function logMessages(message) {
     console.log(message);
 }
 
-export function showToast(message) {
-    const toast = document.createElement('div');
-    toast.className = 'toast';
-    toast.innerHTML = message;
-    document.body.appendChild(toast);
+export function showToast(message, type = "success") {
+    const container = document.querySelector(".toast-container") || createToastContainer();
 
-    setTimeout(() => toast.remove(), 3000);
+    const toast = document.createElement("div");
+    toast.className = `toast ${type}`;
+    toast.innerText = message;
+
+    container.appendChild(toast);
+
+    // Remove the toast after the animation ends
+    setTimeout(() => {
+        toast.remove();
+    }, 4000); // Match the animation duration
+}
+
+function createToastContainer() {
+    const container = document.createElement("div");
+    container.className = "toast-container";
+    document.body.appendChild(container);
+    return container;
 }
