@@ -62,18 +62,25 @@ function createModel() {
 
     model.add(tf.layers.dense({
         inputShape: [Object.keys(vocabulary).length],
+        units: 64,
+        activation: "relu"
+    }));
+
+    model.add(tf.layers.dropout({ rate: 0.4 }));
+
+    model.add(tf.layers.dense({
         units: 32,
         activation: "relu"
     }));
 
-    model.add(tf.layers.dropout({ rate: 0.3 }));
+    model.add(tf.layers.batchNormalization());
 
     model.add(tf.layers.dense({
         units: 16,
         activation: "relu"
     }));
 
-    model.add(tf.layers.batchNormalization());
+    model.add(tf.layers.dropout({ rate: 0.2 }));
 
     model.add(tf.layers.dense({
         units: Object.keys(labelToIndex).length,
@@ -110,17 +117,17 @@ document.getElementById("train-btn").addEventListener("click", async () => {
      console.log("Memory before training:", tf.memory());
 
      let bestValAccuracy = 0;
-     let patience = 5;
+     let patience = 10;
      let noImprovementCount = 0;
 
      await model.fit(xsInputs, ysOutputs, {
          epochs: 50,
-         batchSize: Math.min(4, trainingData.length),
+         batchSize: Math.min(8, trainingData.length),
          validationData: [xsValidation, ysValidation],
          callbacks: {
              onEpochEnd: (epoch, logs) => {
                  const progressText = `Epoch ${epoch + 1}: Loss = ${logs.loss}, Accuracy = ${logs.acc}, ` +
-                     `Validation Loss = ${logs.val_loss}, Validation Accuracy = ${logs.val_acc}`;
+                     `Validation Loss = ${logs.val_loss}, Validation Accuracy = ${logs.val_acc * 100}`;
                  console.log(progressText);
 
                  if (logs.val_acc > bestValAccuracy) {
@@ -149,9 +156,13 @@ document.getElementById("train-btn").addEventListener("click", async () => {
  }
 });
 
+
 //Save Model
 document.getElementById("save-btn").addEventListener("click", async ()=> {
     await model.save("downloads://model");
+    if (model) tf.dispose(model);
+    tf.disposeVariables();
+    console.log("Number of active tensors:", tf.memory().numTensors)
     showToast("Model saved successfully!")
 })
 
